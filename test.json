@@ -1,0 +1,7 @@
+{
+  "action": "super_action",
+  "body": {
+    "subject": "Test message",
+    "message": "Hello World!\n\nThis is test message!"
+  }
+}
