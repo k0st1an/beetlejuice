@@ -1,5 +1,5 @@
 """
-WSGI config for super_duper_beetlejuice project.
+WSGI config for beetlejuice project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "super_duper_beetlejuice.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "beetlejuice.settings")
 
 application = get_wsgi_application()

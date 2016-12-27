@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'super_duper_beetlejuice.urls'
+ROOT_URLCONF = 'beetlejuice.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'super_duper_beetlejuice.wsgi.application'
+WSGI_APPLICATION = 'beetlejuice.wsgi.application'
 
 
 # Database
