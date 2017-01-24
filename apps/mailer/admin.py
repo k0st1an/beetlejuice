@@ -10,7 +10,7 @@ class ActionAdmin(admin.ModelAdmin):
     actions_on_bottom = True
     search_fields = ('name',)
     list_per_page = 30
-    list_display = ('name', 'smtp')
+    list_display = ('name', 'smtp', 'sender')
     list_filter = ('enable',)
 
     readonly_fields = ('created', 'last_update')

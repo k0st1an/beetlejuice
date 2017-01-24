@@ -39,10 +39,11 @@ class Action(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
     enable = models.BooleanField(default=True)
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, unique=True)
     recipients = models.ManyToManyField(Recipient)
     smtp = models.ForeignKey(
         SMTP, blank=True, null=True, on_delete=models.SET_NULL)
+    sender = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name

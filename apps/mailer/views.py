@@ -12,32 +12,24 @@ class SenderViewSet(ViewSet):
 
     @staticmethod
     def post(request):
-        if request.method == 'POST':
-            req_action = request.data.get('action', None)
-            body = request.data.get('body', None)
-            actions = Action.objects.filter(enable=True)
-            emails = []
-            smtp = None
+        req_action = request.data.get('action', None)
+        req_body = request.data.get('body', None)
 
-            if not req_action or not body:
-                return Response({'status': False})
+        try:
+            action = Action.objects.get(name=req_action)
+        except Action.DoesNotExist:
+            return Response({'status': False})
 
-            for action in actions:
-                if action.name == req_action:
-                    recipients = action.recipients.all()
-                    emails = [recipient.email for recipient in recipients]
+        recipients = [recipient.email for recipient in action.recipients.all()]
+        send_from = action.sender
 
-                if action.smtp:
-                    smtp = action.smtp
-                    print(smtp)
+        if not req_body:
+            return Response({'status': False})
 
-            print(emails)
-            print(body)
-            if emails and body:
-                # todo: add support SMTP options
-                send_email(emails, body)
-
-            return Response({'status': True})
+        if recipients and req_body:
+            # todo: add support SMTP options
+            if send_email(recipients, req_body, send_from):
+                return Response({'status': True})
 
         return Response({'status': False})
 
