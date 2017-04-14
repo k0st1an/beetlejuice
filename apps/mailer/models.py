@@ -31,6 +31,12 @@ class SMTP(models.Model):
     def __str__(self):
         return self.name
 
+    def usage_port(self):
+        if self.ssl_port and self.ssl_port:
+            return self.ssl_port
+
+        return self.port
+
     class Meta:
         verbose_name = 'SMTP'
         verbose_name_plural = 'SMTPs'
