@@ -14,7 +14,7 @@
 ## Тестируем
 
 ```
-http POST http://127.0.0.1:8000/api/v1/send/ < test.json
+http POST http://127.0.0.1:8000/api/send/ < test.json
 ```
 
 `http` - [HTTPie](https://httpie.org/).
