@@ -16,7 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls import url, include
 
+from apps.sender.views import DeliveryToRecipientView
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include('apps.mailer.urls')),
+
+    url(r'^api/v1/', include([
+        url(r'^sender/', DeliveryToRecipientView.as_view())
+    ])),
 ]
