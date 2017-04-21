@@ -2,10 +2,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from backend.lib.decarators import need_token
+from backend.lib.decarators import require_token
 
 
 class DeliveryToRecipientView(APIView):
-    @need_token
+    @require_token
     def post(self, request):
         return Response({})
