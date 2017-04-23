@@ -77,3 +77,33 @@ DATABASES = {
     }
 }
 ```
+
+## Sender
+
+На данный момент проект переписывается для работы с провайдерами через их REST API. Пока поддерживается только sendpulse.ru. Предпологается, что будет два типа отправки писем: как сейчас, используя `action` и отправка внешним получателя. В последнем случае придется использовать токен. И пока в `sender` работает только данная отпрака, для внешним пользователям.
+
+Для работы с sendpulse.ru нужно добавить в конфиг `settings.py` следующее:
+
+```python
+TOKEN = '12345'
+
+SEND_PULSE = {
+    'id': '67890',
+    'secret': '101010',
+    'from': {'name': 'Beetlejuice', 'email': 'no-reply@email.ru'}
+}
+```
+
+`id`/`secret` - даёт сам sendpulse.ru. После этого можно отправлять POST запрос на URL `https://<domain>/api/v1/sender/external/` с залоговком `Authorization` в формате JSON. Пример заголовка:
+
+```
+Authorization: test
+```
+
+Пример JSON можно найти в файле `json/send_email.json`. Полный пример:
+
+```bash
+$ http post https://<domain>/api/v1/sender/external/ 'Authorization: test' < json/send_email.json
+```
+
+Пока `sender` в зачаточном состоянии...
