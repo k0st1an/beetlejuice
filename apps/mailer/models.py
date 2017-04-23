@@ -23,12 +23,19 @@ class SMTP(models.Model):
     name = models.CharField(max_length=30)
     host = models.CharField(max_length=254)
     port = models.IntegerField(blank=True, null=True)
+    use_ssl = models.BooleanField(default=True)
     ssl_port = models.IntegerField(blank=True, null=True)
     login = models.CharField(max_length=254)
     password = models.CharField(max_length=254)
 
     def __str__(self):
         return self.name
+
+    def usage_port(self):
+        if self.ssl_port and self.ssl_port:
+            return self.ssl_port
+
+        return self.port
 
     class Meta:
         verbose_name = 'SMTP'

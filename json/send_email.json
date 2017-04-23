@@ -1,0 +1,8 @@
+{
+  "subject": "Hello!",
+  "to": [
+    "kruglovk@gmail.com"
+  ],
+  "text": "",
+  "html": "<div>This is test message</div>"
+}
