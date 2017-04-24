@@ -8,3 +8,13 @@ class EmailSenderSerializer(serializers.Serializer):
     to = serializers.ListField()
     text = serializers.CharField(required=False, allow_blank=True)
     html = serializers.CharField()
+
+
+class BodyField(serializers.Serializer):
+    subject = serializers.CharField()
+    message = serializers.CharField()
+
+
+class DeliveryToInternalSerializer(serializers.Serializer):
+    action = serializers.CharField()
+    body = BodyField()

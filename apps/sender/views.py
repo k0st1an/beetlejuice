@@ -5,7 +5,9 @@ from rest_framework.response import Response
 
 from backend.lib.sender import External
 from backend.lib.decarators import require_token
-from apps.sender.serializers import EmailSenderSerializer
+from apps.sender.serializers import (
+    EmailSenderSerializer, DeliveryToInternalSerializer
+)
 
 
 class DeliveryToExternalView(APIView):
@@ -20,5 +22,16 @@ class DeliveryToExternalView(APIView):
 
         if not send_ext.send():
             Response({'status': False}, status=400)
+
+        return Response({'status': True}, status=200)
+
+
+class DeliveryToInternalView(APIView):
+    @staticmethod
+    def post(request):
+        email = DeliveryToInternalSerializer(data=request.data)
+
+        if not email.is_valid():
+            return Response(email.errors, status=400)
 
         return Response({'status': True}, status=200)

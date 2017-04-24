@@ -57,3 +57,45 @@ class External:
         history.save()
 
         return history.status
+
+
+# class Base:
+#     def __init__(self):
+#         self.sender = None
+#         self.subject = None
+#         self.recipients_str = None
+#         self.send_pulse_key = None
+#         self.send_pulse_secret = None
+#         self.email = None
+#
+#     def send(self):
+#         if self.sender is None:
+#             raise NotImplementedError('self.sender is not defined')
+#
+#         if self.subject is None:
+#             raise NotImplementedError('self.subject is not defined')
+#
+#         if self.recipients_str is None:
+#             raise NotImplementedError('self.recipients_str is not defined')
+#
+#         if self.email is None:
+#             raise NotImplementedError('self.email is not defined')
+#
+#         history = History.objects.create(
+#             sender=self.sender,
+#             subject=self.subject,
+#             recipient=self.recipients_str
+#         )
+#
+#         client = Client(key=self.send_pulse_key, secret=self.send_pulse_secret)
+#
+#         res = client.smtp_send_email(self.email)
+#
+#         if res.get('error_code'):
+#             history.comment = res['message']
+#         else:
+#             history.status = True
+#
+#         history.save()
+#
+#         return history.status
