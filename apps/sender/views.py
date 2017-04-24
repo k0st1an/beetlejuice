@@ -19,9 +19,9 @@ class BaseView(APIView):
         if not email.is_valid():
             return Response(email.errors, status=400)
 
-        send_ext = Sender(email.validated_data)
+        send = Sender(email.validated_data)
 
-        if not send_ext.send():
+        if not send.send():
             Response({'status': False}, status=400)
 
         return Response({'status': True}, status=200)
