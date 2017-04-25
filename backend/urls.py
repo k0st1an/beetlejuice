@@ -22,7 +22,6 @@ from apps.sender.views import (
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('apps.mailer.urls')),
 
     url(r'^api/v1/', include([
         url(r'^sender/external/', DeliveryToExternalView.as_view()),

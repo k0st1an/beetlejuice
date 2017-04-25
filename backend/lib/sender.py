@@ -11,8 +11,6 @@ from backend.lib.email_providers import providers
 # todo: обобщить
 
 class Sender:
-    email = None
-
     def __init__(self, email, provider='send_pulse'):
         self.email = providers(provider, email)
         self.provider_conf = getattr(settings, provider.upper())

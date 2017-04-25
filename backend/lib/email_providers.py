@@ -2,7 +2,7 @@
 
 from django.conf import settings
 
-from apps.mailer.models import Action
+from apps.sender.models import Action
 
 
 class SendPulse:
