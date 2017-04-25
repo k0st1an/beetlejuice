@@ -4,7 +4,7 @@ from functools import wraps
 
 from django.conf import settings
 from rest_framework.authentication import get_authorization_header
-from rest_framework.response import Response
+from rest_framework.exceptions import NotAuthenticated
 
 
 def require_token(func):
@@ -14,8 +14,8 @@ def require_token(func):
         received_token = get_authorization_header(request).decode()
         token = getattr(settings, 'TOKEN', None)
 
-        if not received_token == token:
-            return Response({}, status=401)
+        if received_token != token:
+            raise NotAuthenticated
 
         return func(*args)
     return wrapper

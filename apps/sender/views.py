@@ -2,11 +2,12 @@
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.exceptions import ParseError
 
 from backend.lib.sender import Sender
 from backend.lib.decarators import require_token
 from apps.sender.serializers import (
-    EmailSenderSerializer, DeliveryToInternalSerializer
+    DeliveryToExternalSerializer, DeliveryToInternalSerializer
 )
 
 
@@ -17,7 +18,7 @@ class BaseView(APIView):
         email = self.serializer_class(data=request.data)
 
         if not email.is_valid():
-            return Response(email.errors, status=400)
+            raise ParseError(email.errors)
 
         send = Sender(email.validated_data)
 
@@ -32,7 +33,7 @@ class DeliveryToInternalView(BaseView):
 
 
 class DeliveryToExternalView(BaseView):
-    serializer_class = EmailSenderSerializer
+    serializer_class = DeliveryToExternalSerializer
 
     @require_token
     def post(self, request):

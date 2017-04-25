@@ -3,7 +3,7 @@
 from rest_framework import serializers
 
 
-class EmailSenderSerializer(serializers.Serializer):
+class DeliveryToExternalSerializer(serializers.Serializer):
     subject = serializers.CharField()
     to = serializers.ListField(child=serializers.CharField())
     text = serializers.CharField(required=False, allow_blank=True)
