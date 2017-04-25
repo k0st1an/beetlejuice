@@ -4,23 +4,9 @@
     <img src="https://cloud.githubusercontent.com/assets/9702154/20746262/1f0b29e4-b6f6-11e6-8b09-72470fea38d8.png" />
 </p>
 
-Микросервис по отправке почтовых сообщений через провайреда sendpulse.ru.
+Микросервис по отправке почтовых сообщений через провайреда sendpulse.ru. Под капотом использует [Django](https://www.djangoproject.com/).
 
-## TODO
-
-- Добавить поддержку отпраки через SMTP указанный в экшене (модель реализована)
-- Белый список от кого принимать запросы
-
-## Тестируем
-
-```
-http POST http://127.0.0.1:8000/api/send/ < test.json
-```
-
-`http` - [HTTPie](https://httpie.org/).
-
-
-## Настройки
+## Настройка
 
 Настройки ниже всего навсего пример. Большую часть настрок можно прописать в `settings.py`.
 
@@ -48,21 +34,6 @@ CORS_ORIGIN_WHITELIST = [
 
 В документации описаны другие возможные настройки.
 
-
-### Email
-
-Нужно указать от кого отправлять письма. Обычно без указания правильного (с точки зрения настроек провайдера предоставляющего доступ к SMTP) обратного адреса отправить письмо не получится. Для этого нужно в `settings.py` определить переменную `EMAIL_FROM`. Ниже пример настройки:
-
-```python
-EMAIL_HOST = 'smtp-pulse.com'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_TIMEOUT = 5
-EMAIL_HOST_USER = 'me@domain.com'
-EMAIL_HOST_PASSWORD = 'JLou2lHHd2jdf32Df'
-EMAIL_FROM = 'example@domain.com'
-```
-
 ### DB
 
 ```python
@@ -78,32 +49,41 @@ DATABASES = {
 }
 ```
 
-## Sender
-
-На данный момент проект переписывается для работы с провайдером через его REST API. Предпологается, что будет два типа отправки писем: как сейчас, используя `action` и отправка внешним получателя. В последнем случае придется использовать токен.
-
-Для работы нужно добавить в конфиг `settings.py` следующее:
+### sendpulse
 
 ```python
 TOKEN = '12345'
 
 SEND_PULSE = {
-    'id': '67890',
-    'secret': '101010',
+    'id': 'XXX',
+    'secret': 'XXX',
     'from': {'name': 'Beetlejuice', 'email': 'no-reply@email.ru'}
 }
 ```
 
-`id`/`secret` - даёт сам sendpulse.ru. После этого можно отправлять POST запрос на URL `https://<domain>/api/v1/sender/external/` с залоговком `Authorization` в формате JSON. Пример заголовка:
+`id`/`secret` - даёт сам sendpulse.ru. Вожно учесть с каких доменов Вам разрешено отправлять почту.
+
+## API
+
+Есть поддержка отправки писен как внутренним подписчиками, так и внешним клиентам. В последнем случае придеться использовать токен. Доступны следующие роутеры:
+
+- `<domain>/api/v1/sender/internal/` - для отправки внутренним подписчикам. Метод отправки POST, тип данных JSON.
+- `<domain>/api/v1/sender/external/` - для отправки внешним клиентам. Метод отправки POST, тип данных JSON.
+
+Примеры запросов ([HTTPie](https://httpie.org/)):
 
 ```
-Authorization: test
+$ http post <domain>/api/v1/sender/internal/ < json/send_email_internal.json
+...
+$ http post <domain>/api/v1/sender/external/ 'Authorization: XXX' < json/send_email_external.json
 ```
 
-Пример JSON можно найти в файле `json/send_email.json`. Полный пример:
+При успешном запросе вернет JSON со статусом `200`:
 
-```bash
-$ http post https://<domain>/api/v1/sender/external/ 'Authorization: test' < json/send_email.json
+```json
+{
+  "status": true
+}
 ```
 
-Пока `sender` в зачаточном состоянии...
+Если возникли проблемы при отправке сообщения вернет `false` и статус `400`. Если был отправлен кривой JSON вернет статус `400` и JSON в каком поле что не так.
